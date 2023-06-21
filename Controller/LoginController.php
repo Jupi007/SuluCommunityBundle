@@ -52,7 +52,7 @@ class LoginController extends AbstractController
 
         $maintenance = $communityManager->getConfigTypeProperty(Configuration::MAINTENANCE, Configuration::ENABLED);
 
-        $response = $this->render(
+        $response = $this->renderForm(
             $communityManager->getConfigTypeProperty(self::TYPE, Configuration::EMBED_TEMPLATE),
             [
                 'maintenanceMode' => $maintenance,

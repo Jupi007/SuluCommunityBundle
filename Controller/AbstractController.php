@@ -88,12 +88,11 @@ abstract class AbstractController extends SymfonyAbstractController
             $hasher = $this->container->get('?security.password_hasher');
 
             return $hasher->hashPassword($user, $plainPassword);
-        } else {
-            /** @var \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $encoder */
-            $encoder = $this->container->get('?security.password_encoder');
-
-            return $encoder->encodePassword($user, $plainPassword);
         }
+        /** @var \Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface $encoder */
+        $encoder = $this->container->get('?security.password_encoder');
+
+        return $encoder->encodePassword($user, $plainPassword);
     }
 
     /**
@@ -121,7 +120,7 @@ abstract class AbstractController extends SymfonyAbstractController
             Configuration::TEMPLATE
         );
 
-        return $this->render(
+        return $this->renderForm(
             $template,
             $data
         );
