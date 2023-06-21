@@ -14,6 +14,7 @@ namespace Sulu\Bundle\CommunityBundle\Manager;
 use Sulu\Bundle\CommunityBundle\DependencyInjection\Configuration;
 use Sulu\Bundle\CommunityBundle\Event\UserCompletedEvent;
 use Sulu\Bundle\CommunityBundle\Event\UserConfirmedEvent;
+use Sulu\Bundle\CommunityBundle\Event\UserEmailConfirmedEvent;
 use Sulu\Bundle\CommunityBundle\Event\UserPasswordForgotEvent;
 use Sulu\Bundle\CommunityBundle\Event\UserPasswordResetedEvent;
 use Sulu\Bundle\CommunityBundle\Event\UserProfileSavedEvent;
@@ -177,6 +178,15 @@ class CommunityManager implements CommunityManagerInterface
 
         // Event
         $event = new UserConfirmedEvent($user, $this->config);
+        $this->eventDispatcher->dispatch($event);
+
+        return $user;
+    }
+
+    public function emailConfirm(User $user): User
+    {
+        // Event
+        $event = new UserEmailConfirmedEvent($user, $this->config);
         $this->eventDispatcher->dispatch($event);
 
         return $user;

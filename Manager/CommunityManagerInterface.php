@@ -34,7 +34,6 @@ use Symfony\Component\HttpFoundation\Request;
  *      },
  *      delete_user: bool,
  * }
- *
  * @phpstan-type Config array{
  *     from: string|string[],
  *     to: string|string[],
@@ -84,6 +83,11 @@ interface CommunityManagerInterface
      * Confirm the user registration.
      */
     public function confirm(string $token): ?User;
+
+    /**
+     * Confirm the new user email.
+     */
+    public function emailConfirm(User $user): ?User;
 
     /**
      * Generate password reset token and save.

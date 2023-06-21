@@ -31,6 +31,7 @@ class EmailConfirmationController extends AbstractController
      */
     public function indexAction(Request $request): Response
     {
+        $communityManager = $this->getCommunityManager($this->getWebspaceKey());
         $entityManager = $this->getEntityManager();
         $repository = $this->getEmailConfirmationTokenRepository();
 
@@ -59,6 +60,9 @@ class EmailConfirmationController extends AbstractController
                 $email->setEmail($mainEmail);
             }
             $entityManager->remove($token);
+
+            $communityManager->emailConfirm($user);
+
             $this->saveEntities();
 
             $success = true;
