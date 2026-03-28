@@ -91,7 +91,7 @@ class Configuration implements ConfigurationInterface
     public const LAST_LOGIN = 'last_login';
     public const REFRESH_INTERVAL = 'refresh_interval';
 
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('sulu_community');
         $rootNode = $treeBuilder->getRootNode();
@@ -136,7 +136,7 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->beforeNormalization()
                                 ->ifString()
-                                    ->then(function ($value) {
+                                    ->then(function($value) {
                                         return [
                                             self::EMAIL_FROM_NAME => $value,
                                             self::EMAIL_FROM_EMAIL => $value,
@@ -151,7 +151,7 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->beforeNormalization()
                                 ->ifString()
-                                    ->then(function ($value) {
+                                    ->then(function($value) {
                                         return [
                                             self::EMAIL_TO_NAME => $value,
                                             self::EMAIL_TO_EMAIL => $value,

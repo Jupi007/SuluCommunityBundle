@@ -22,7 +22,8 @@ jobs:
                     - php-version: '7.2'
                       lint: false
                       dependency-versions: 'lowest'
-                      tools: 'composer:v1'
+                      tools: 'composer:v2'
+                      composer-block-insecure: false
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: disabled
 
@@ -30,6 +31,7 @@ jobs:
                       lint: false
                       dependency-versions: 'highest'
                       tools: 'composer:v2'
+                      composer-block-insecure: false
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
 
@@ -41,12 +43,25 @@ jobs:
                           SYMFONY_DEPRECATIONS_HELPER: weak
 
                     - php-version: '8.1'
-                      lint: true
+                      lint: false
                       dependency-versions: 'highest'
                       tools: 'composer:v2'
                       env:
                           SYMFONY_DEPRECATIONS_HELPER: weak
 
+                    - php-version: '8.2'
+                      lint: false
+                      dependency-versions: 'highest'
+                      tools: 'composer:v2'
+                      env:
+                          SYMFONY_DEPRECATIONS_HELPER: weak
+
+                    - php-version: '8.3'
+                      lint: true
+                      dependency-versions: 'highest'
+                      tools: 'composer:v2'
+                      env:
+                          SYMFONY_DEPRECATIONS_HELPER: weak
         services:
             mysql:
                 image: mysql:5.7
@@ -67,9 +82,18 @@ jobs:
                   extensions: 'mysql, gd'
                   tools: ${{ matrix.tools }}
 
+            - name: Set composer block-insecure
+              if: ${{ matrix.composer-block-insecure == false }}
+              run: composer config "audit.block-insecure" false
+
             - name: Remove php-cs-fixer/shim package
               if: ${{ matrix.php-version == '7.2' }}
               run: composer remove php-cs-fixer/shim --dev --no-interaction
+
+            - name: Install additional lowest dependencies
+              if: ${{ matrix.dependency-versions == 'lowest' }}
+              run: |
+                  composer require symfony/swiftmailer-bundle --no-interaction --no-update
 
             - name: Install composer dependencies
               uses: ramsey/composer-install@v1

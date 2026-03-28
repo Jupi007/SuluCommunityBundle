@@ -122,7 +122,8 @@ abstract class AbstractController extends SymfonyAbstractController
 
         return $this->renderForm(
             $template,
-            $data
+            $data,
+            $response
         );
     }
 
@@ -146,9 +147,6 @@ abstract class AbstractController extends SymfonyAbstractController
         return $this->getTemplateAttributeResolver()->resolve($custom);
     }
 
-    /**
-     * @return User
-     */
     public function getUser(): ?User
     {
         $user = parent::getUser();
@@ -189,7 +187,7 @@ abstract class AbstractController extends SymfonyAbstractController
     /**
      * @param mixed[] $parameters
      */
-    public function render(string $view, array $parameters = [], Response $response = null): Response
+    public function render(string $view, array $parameters = [], ?Response $response = null): Response
     {
         return parent::render(
             $view,
